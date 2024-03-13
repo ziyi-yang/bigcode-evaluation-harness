@@ -1,0 +1,10 @@
+{
+    "questions": ["Write a function to find the shared elements from the given two lists.",
+                  "Write a python function to identify non-prime numbers.",
+                  "Write a function to find the n largest integers from a given list of numbers, returned in descending order."
+                ],
+    "solutions": ["def similar_elements(test_tup1, test_tup2):\n  res = tuple(set(test_tup1) & set(test_tup2))\n  return (res) ",
+                 "import math\ndef is_not_prime(n):\n    result = False\n    for i in range(2,int(math.sqrt(n)) + 1):\n        if n % i == 0:\n            result = True\n    return result",
+                 "import heapq as hq\ndef heap_queue_largest(nums,n):\n  largest_nums = hq.nlargest(n, nums)\n  return largest_nums"
+                 ]
+}
