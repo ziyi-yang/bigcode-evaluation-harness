@@ -60,15 +60,15 @@ class MBPP_3shot(Task):
         return examples
 
     @staticmethod
-    def few_shot_prompt(entry, problem_input, few_examples):
+    def few_shot_prompt(problem_input, problem_test, few_shot_examples):
         """Three-shot prompt format for MBPP"""
-        prompt = "You are an expert Python programmer. "
-        for question, solution in zip(
-            few_examples["questions"][:NUM_SHOTS], few_examples["solutions"][:NUM_SHOTS]
+        prompt = "You are an expert Python programmer. Below are three examples of python code solutions.\n"
+        for question, solution, test in zip(
+            few_shot_examples["questions"][:NUM_SHOTS], few_shot_examples["solutions"][:NUM_SHOTS], few_shot_examples["tests"][:NUM_SHOTS]
         ):
-            prompt += f'''Q: {question}\n\n# solution in Python:\n\n\n"""{question}"""\n{solution}\n\n\n\n\n\n'''
-        prompt += f"""Q: {problem_input}\n\n# solution in Python:\n\n\n"""
-        return entry + prompt
+            prompt += f'''You are an expert Python programmer, and here is your task: {question}. Your code should pass these tests: {test}\nSolution in Python:\n{solution}\n\n'''
+        prompt += f"""You are an expert Python programmer, and here is your task: {problem_input}. Your code should pass these tests: {problem_test}\nSolution in Python:\n"""
+        return prompt
 
     def get_prompt(self, doc):
         """Builds the prompt for the LM to generate from.
@@ -76,10 +76,10 @@ class MBPP_3shot(Task):
         """
         
         # description = doc["text"]
-        entry = ""
         problem_input = doc["prompt"]
+        problem_test = doc["test_list"][0]
         few_shot_examples = self.fewshot_examples()
-        prompt = self.few_shot_prompt(entry, problem_input, few_shot_examples)
+        prompt = self.few_shot_prompt(problem_input, problem_test, few_shot_examples)
         print(prompt)
         return prompt
 
