@@ -46,7 +46,7 @@ class MBPP_3shot(Task):
         dataset = self.dataset["test"]
         # the wrong split of mbpp can be loaded with old datasets cache
         assert (
-            len(dataset) == 500
+            len(dataset) == 257
         ), "please ensure you have the latest version of MBPP dataset, try deleting its old cache"
         return dataset
 
