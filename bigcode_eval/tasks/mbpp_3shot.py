@@ -60,27 +60,27 @@ class MBPP_3shot(Task):
         return examples
 
     @staticmethod
-    def few_shot_prompt(entry, text, examples):
+    def few_shot_prompt(entry, problem_input, few_examples):
         """Three-shot prompt format for MBPP"""
         prompt = "You are an expert Python programmer. "
         for question, solution in zip(
-            examples["questions"][:NUM_SHOTS], examples["solutions"][:NUM_SHOTS]
+            few_examples["questions"][:NUM_SHOTS], few_examples["solutions"][:NUM_SHOTS]
         ):
-            prompt += f'''Q: {question}\n\n# solution in Python:\n\n\ndef solution():\n    """{question}"""\n{solution}\n\n\n\n\n\n'''
-        prompt += f"""Q: {text}\n\n# solution in Python:\n\n\n"""
+            prompt += f'''Q: {question}\n\n# solution in Python:\n\n\n"""{question}"""\n{solution}\n\n\n\n\n\n'''
+        prompt += f"""Q: {problem_input}\n\n# solution in Python:\n\n\n"""
         return entry + prompt
 
     def get_prompt(self, doc):
         """Builds the prompt for the LM to generate from.
-        MBPP prompt is built following to InCoder (Fried et al.) approach
-        prompt = docstring that includes one test
+        3-shot demonstration.
         """
         
         # description = doc["text"]
-        entry = doc["text"]
-        test_example = doc["test_list"][0]
+        entry = ""
+        problem_input = doc["prompt"]
         few_shot_examples = self.fewshot_examples()
-        prompt = self.few_shot_prompt(entry, test_example, few_shot_examples)
+        prompt = self.few_shot_prompt(entry, problem_input, few_shot_examples)
+        print(prompt)
         return prompt
 
     def get_reference(self, doc):
