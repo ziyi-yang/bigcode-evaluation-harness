@@ -1,4 +1,4 @@
-"""3-shot evaluation for MBPP
+"""3-shot evaluation for MBPP Sanitinized (Hand-Verified as in Mistral Tech Report)
 Program Synthesis with Large Language Models
 https://arxiv.org/abs/2108.07732
 
@@ -32,6 +32,8 @@ class MBPP_3shot(Task):
     """
 
     DATASET_PATH = "mbpp"
+
+    DATASET_NAME = "sanitized"
 
     def __init__(self):
         super().__init__(
